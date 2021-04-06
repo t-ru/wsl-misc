@@ -46,7 +46,11 @@ else
     _wsl_exe="/mnt/${_letter}${_wsl_exe}" 
 
     # wsl.exe not found ... exit
-    [ ! -e "${_wsl_exe}" ] && exit
+    if [ ! -e "${_wsl_exe}" ] ; then
+        unset _wsl_exe
+        unset _wsl_version
+        exit
+    fi
 
     # wsl.exe writes null chars ("\000" or short "\0") to output ... remove with tr
     _result=$( ${_wsl_exe} --list --verbose |  tr -d '\0' | grep  ${WSL_DISTRO_NAME} | awk -F ' ' '{print $3}' )
