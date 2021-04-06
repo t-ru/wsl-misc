@@ -50,6 +50,10 @@ else
 
     # wsl.exe writes null chars ("\000" or short "\0") to output ... remove with tr
     _result=$( ${_wsl_exe} --list --verbose |  tr -d '\0' | grep  ${WSL_DISTRO_NAME} | awk -F ' ' '{print $3}' )
+    
+    # drop all non-numeric chars from result
+    _result=$( echo "${_result//[!0-9]/}" )
+
     [ -n "${_result}" ] && _wsl_version="${_result}"
     
     unset _result
